@@ -73,9 +73,10 @@ if 'user_info' not in st.session_state:
 # Load standards from Excel
 def load_standards(style_number):
     try:
-        # Replace with your actual Excel path
-        standards_df = pd.read_excel('standards.xlsx')
-        return standards_df[standards_df['Style Number'] == style_number]
+        df = pd.read_excel("standards.xlsx")
+        df["Style Number"] = df["Style Number"].astype(str).str.strip()
+        style_number = str(style_number).strip()  # ensure input is a clean string
+        return df[df["Style Number"] == style_number]
     except Exception as e:
         st.error(f"Error loading standards: {e}")
         return None
@@ -83,7 +84,8 @@ def load_standards(style_number):
 def get_all_style_numbers():
     try:
         df = pd.read_excel("standards.xlsx")
-        return sorted(df["Style Number"].dropna().astype(str).unique())
+        df["Style Number"] = df["Style Number"].astype(str).str.strip()
+        return sorted(df["Style Number"].dropna().unique())
     except Exception as e:
         st.error(f"Could not load style numbers: {e}")
         return []
