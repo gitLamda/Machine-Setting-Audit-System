@@ -83,7 +83,7 @@ def load_standards(style_number):
 def get_all_style_numbers():
     try:
         df = pd.read_excel("standards.xlsx")
-        return sorted(df["Style Number"].dropna().unique())
+        return sorted(df["Style Number"].dropna().astype(str).unique())
     except Exception as e:
         st.error(f"Could not load style numbers: {e}")
         return []
